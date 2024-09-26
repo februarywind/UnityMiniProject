@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public PoolManager poolManager;
+    public TankState tankState;
     public GameUI gameUI;
 
     public int[] timer;
