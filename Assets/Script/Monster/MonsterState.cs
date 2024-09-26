@@ -34,7 +34,7 @@ public class MonsterState : MonoBehaviour
         Vector3 dir = player.position - transform.position;
         transform.Translate(dir.normalized * moveSpeed * Time.deltaTime, Space.World);
     }
-    private void HitDmage(float dmg)
+    public void HitDmage(float dmg)
     {
         hp -= dmg;
     }

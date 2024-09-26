@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TankControl : MonoBehaviour
@@ -6,6 +7,7 @@ public class TankControl : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] Transform Cannon;
     [SerializeField] GameObject FirePoint;
+    [SerializeField] GameObject ExplosionPoint;
     Transform FirePoinTr;
     Rigidbody rigid;
     float YRot;
@@ -45,11 +47,15 @@ public class TankControl : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(FirePoinTr.position - Cannon.transform.position);
 
-            //(시작값, 목표값, 회전 속도)를 인자로 받아 회전 값을 연산해주는 메서드
             Quaternion rotateAmount = Quaternion.RotateTowards(Cannon.transform.rotation, targetRotation, 2 * rotateSpeed * Time.deltaTime);
 
-            //회전값 적용
             Cannon.transform.rotation = rotateAmount;
+            if (Input.GetKeyDown(KeyCode.Space) && !ExplosionPoint.activeSelf)
+            {
+                ExplosionPoint.transform.position = FirePoinTr.position;
+                ExplosionPoint.SetActive(true);
+                StartCoroutine(CannonCoolTime());
+            }
         }
         else
         {
@@ -57,12 +63,15 @@ public class TankControl : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(transform.forward);
 
-            //(시작값, 목표값, 회전 속도)를 인자로 받아 회전 값을 연산해주는 메서드
             Quaternion rotateAmount = Quaternion.RotateTowards(Cannon.transform.rotation, targetRotation, 2 * rotateSpeed * Time.deltaTime);
 
-            //회전값 적용
             Cannon.transform.rotation = rotateAmount;
 
         }
+    }
+    IEnumerator CannonCoolTime()
+    {
+        yield return new WaitForSeconds(GameManager.instance.tankState.CannonCoolTime);
+        ExplosionPoint.SetActive(false);
     }
 }

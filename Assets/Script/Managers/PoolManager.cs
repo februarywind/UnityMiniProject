@@ -21,7 +21,6 @@ public class PoolManager : MonoBehaviour
             {
                 item.gameObject.transform.position = spwanPoint[Random.Range(0, spwanPoint.Length)].position;
                 item.gameObject.SetActive(true);
-                Debug.Log(item.gameObject.name);
                 return;
             }
         }
