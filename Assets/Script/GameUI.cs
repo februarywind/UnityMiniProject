@@ -6,6 +6,7 @@ public class GameUI : MonoBehaviour
 {
     [SerializeField] Slider hpSlider;
     [SerializeField] TextMeshProUGUI timeText;
+    [SerializeField] TextMeshProUGUI killCounterText;
     public void HpChange(float maxHp, float hp)
     {
         hpSlider.maxValue = maxHp;
@@ -14,5 +15,9 @@ public class GameUI : MonoBehaviour
     public void TimeUpdate(float sec, float min)
     {
         timeText.text = $"{min}:{sec.ToString("00")}";
+    }
+    public void KillCounterUpdate(int count)
+    {
+        killCounterText.text = $"{count}";
     }
 }

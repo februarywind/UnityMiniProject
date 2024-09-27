@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public int[] timer;
     Coroutine TimerCoroutine;
     WaitForSeconds oneSecond = new WaitForSeconds(1);
+    int killCount = 0;
     private void Awake()
     {
         instance = this;
@@ -30,5 +31,10 @@ public class GameManager : MonoBehaviour
             }
             gameUI.TimeUpdate(timer[0], timer[1]);
         }
+    }
+    public void KillCount()
+    {
+        killCount++;
+        gameUI.KillCounterUpdate(killCount);
     }
 }

@@ -43,4 +43,8 @@ public class MonsterState : MonoBehaviour
     {
         HitDmage(GameManager.instance.tankState.TurretDmg);
     }
+    private void OnDisable()
+    {
+        GameManager.instance.KillCount();
+    }
 }
