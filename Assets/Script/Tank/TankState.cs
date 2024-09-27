@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TankState : MonoBehaviour
 {
@@ -15,9 +14,13 @@ public class TankState : MonoBehaviour
 
     [SerializeField] int EXP;
     [SerializeField] int levelUpEXP = 100;
+    [SerializeField] GameObject buttons;
+    [SerializeField] Button[] button;
+    int[] ints = { 1, 2, 3 };
     private void Awake()
     {
         hp = maxHp;
+        button = buttons.GetComponentsInChildren<Button>();
     }
     public void TurretDmgUpdate(float value)
     {
@@ -48,14 +51,32 @@ public class TankState : MonoBehaviour
         EXP += value;
         if (EXP >= levelUpEXP)
         {
+            EXP -= levelUpEXP;
+            levelUpEXP = (int)(levelUpEXP * 1.2);
             LevelUp();
         }
         GameManager.instance.gameUI.EXPUpdate(levelUpEXP, EXP);
     }
     void LevelUp()
     {
-        EXP -= levelUpEXP;
-        levelUpEXP = (int)(levelUpEXP * 1.2);
+        buttons.SetActive(true);
+        int temp = 0;
+        foreach (var item in button)
+        {
+            switch (ints[temp])
+            {
+                case 1:
+                    item.onClick.AddListener(() => TurretDmgUpdate(1));
+                    break;
+                case 2:
+                    item.onClick.AddListener(() => TurretFireSpeedUpdate(1));
+                    break;
+                case 3:
+                    item.onClick.AddListener(() => TurretRangeUpdate(1));
+                    break;
+            }
+            temp++;
+        }
     }
 
     private void OnCollisionStay(Collision collision)
