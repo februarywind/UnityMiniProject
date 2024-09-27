@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 905177410321757824}
   - component: {fileID: 7633155091258047304}
   m_Layer: 6
-  m_Name: Sphere
+  m_Name: Monster
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15aa90b63cd20ae4790670e209cacc77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhp: 30
+  maxhp: 100
   ap: 0
   moveSpeed: 3
 --- !u!54 &7633155091258047304

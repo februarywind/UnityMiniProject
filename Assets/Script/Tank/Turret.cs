@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public float radius = 0f;
+    public float radius;
     public LayerMask layer;
     public Collider[] colliders;
     public Collider short_enemy;
@@ -12,13 +10,14 @@ public class Turret : MonoBehaviour
     void Update()
     {
         colliders = Physics.OverlapSphere(transform.position, radius, layer);
+        //Debug.Log(Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layer));
 
         if (colliders.Length > 0)
         {
             float short_distance = 1000;
             foreach (Collider col in colliders)
             {
-                float short_distance2 = Vector3.Distance(transform.position, col.transform.position);
+                float short_distance2 = (transform.position - col.transform.position).sqrMagnitude;
                 if (short_distance >= short_distance2)
                 {
                     short_distance = short_distance2;
