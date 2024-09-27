@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class MonsterState : MonoBehaviour
 {
+    [SerializeField] Transform player;
     [SerializeField] float maxhp;
+    [SerializeField] float hp;
     [SerializeField] float ap;
     [SerializeField] float moveSpeed;
+    [SerializeField] int giveEXP;
 
-    Transform player;
-    float hp;
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -44,6 +45,7 @@ public class MonsterState : MonoBehaviour
     private void OnDisable()
     {
         GameManager.instance.KillCount();
+        GameManager.instance.tankState.EXPUpdate(giveEXP);
     }
     private void OnCollisionEnter(Collision collision)
     {

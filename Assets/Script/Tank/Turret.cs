@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public float radius;
     public LayerMask layer;
     public Collider[] colliders;
     public Collider short_enemy;
     public GameObject particle;
     void Update()
     {
-        colliders = Physics.OverlapSphere(transform.position, radius, layer);
+        colliders = Physics.OverlapSphere(transform.position, GameManager.instance.tankState.TurretRange, layer);
         //Debug.Log(Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layer));
 
         if (colliders.Length > 0)
@@ -35,6 +34,6 @@ public class Turret : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, 10f);
     }
 }

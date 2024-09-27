@@ -111,9 +111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15aa90b63cd20ae4790670e209cacc77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhp: 100
+  player: {fileID: 0}
+  maxhp: 30
+  hp: 0
   ap: 0
   moveSpeed: 3
+  giveEXP: 1
 --- !u!54 &7633155091258047304
 Rigidbody:
   m_ObjectHideFlags: 0
