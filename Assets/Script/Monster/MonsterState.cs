@@ -9,13 +9,11 @@ public class MonsterState : MonoBehaviour
     [SerializeField] float ap;
     [SerializeField] float moveSpeed;
 
-    Rigidbody rigid;
     Transform player;
     float hp;
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
-        rigid = GetComponent<Rigidbody>();
     }
     private void OnEnable()
     {
@@ -46,5 +44,12 @@ public class MonsterState : MonoBehaviour
     private void OnDisable()
     {
         GameManager.instance.KillCount();
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Plane")
+        {
+            transform.parent = collision.transform;
+        }
     }
 }

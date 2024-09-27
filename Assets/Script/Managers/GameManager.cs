@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public PoolManager poolManager;
     public TankState tankState;
     public GameUI gameUI;
+    public MapRePosition mapRePosition;
 
     public int[] timer;
     Coroutine TimerCoroutine;

@@ -24,7 +24,7 @@ public class PoolManager : MonoBehaviour
                 return;
             }
         }
-        pools.Add(Instantiate(prefabs[index], spwanPoint[Random.Range(0, spwanPoint.Length)].position, transform.rotation, transform));
+        pools.Add(Instantiate(prefabs[index], spwanPoint[Random.Range(0, spwanPoint.Length)].position, transform.rotation));
     }
     IEnumerator SpwanStart()
     {
