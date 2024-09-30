@@ -1,7 +1,14 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+[Serializable]
+public struct LevelStet
+{
+    public float maxHp;
+    public float ap;
+    public float moveSpeed;
+    public int giveEXP;
+}
 
 public class MonsterState : MonoBehaviour
 {
@@ -12,12 +19,30 @@ public class MonsterState : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] int giveEXP;
 
+    [SerializeField] GameObject[] MonsterModel;
+    [SerializeField] LevelStet[] levelStets;
+
+    [SerializeField] BoxCollider boxCollider;
+
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
     }
     private void OnEnable()
     {
+        foreach (var item in MonsterModel)
+        {
+            item.SetActive(false);
+        }
+        int level = GameManager.instance.timer[1] / 2;
+
+        MonsterModel[level].SetActive(true);
+
+        moveSpeed = levelStets[level].moveSpeed;
+        giveEXP = levelStets[level].giveEXP;
+        maxhp = levelStets[level].maxHp;
+        ap = levelStets[level].ap;
+
         hp = maxhp;
     }
     private void Update()
@@ -25,13 +50,13 @@ public class MonsterState : MonoBehaviour
         Move();
         if (hp <= 0)
         {
-            gameObject.SetActive(false);
+            StartCoroutine(Dead());
         }
     }
     void Move()
     {
-        Vector3 dir = player.position - transform.position;
-        transform.Translate(dir.normalized * moveSpeed * Time.deltaTime, Space.World);
+        transform.LookAt(player.transform.position);
+        transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
     }
     public void HitDmage(float dmg)
     {
@@ -53,5 +78,12 @@ public class MonsterState : MonoBehaviour
         {
             transform.parent = collision.transform;
         }
+    }
+    IEnumerator Dead()
+    {
+        boxCollider.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        boxCollider.enabled = true;
+        gameObject.SetActive(false);
     }
 }

@@ -8,6 +8,8 @@ public class PoolManager : MonoBehaviour
     [SerializeField] GameObject[] prefabs;
     [SerializeField] Transform[] spwanPoint;
     List<GameObject> pools = new List<GameObject> {};
+    [SerializeField] float[] spwanTime;
+    WaitForSeconds MonsterSpwanTime = new WaitForSeconds(3);
     Coroutine Coroutine;
     private void Start()
     {
@@ -30,8 +32,12 @@ public class PoolManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return MonsterSpwanTime;
             CreateObj(0);
         }
+    }
+    public void MonsterSpwanTimeUpdate(int value)
+    {
+        MonsterSpwanTime = new WaitForSeconds(spwanTime[value]);
     }
 }

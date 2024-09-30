@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
                 GameOver();
                 break;
             }
+            if (timer[1] % 2 == 0)
+            {
+                poolManager.MonsterSpwanTimeUpdate(timer[1] / 2);
+            }
         }
     }
     public void KillCount()
