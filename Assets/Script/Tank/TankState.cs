@@ -108,6 +108,10 @@ public class TankState : MonoBehaviour
         {
             hp -= 10 * Time.deltaTime;
             GameManager.instance.gameUI.HpChange(maxHp, hp);
+            if (hp <= 0)
+            {
+                GameManager.instance.GameOver();
+            }
         }
     }
 }

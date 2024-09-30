@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     Coroutine TimerCoroutine;
     WaitForSeconds oneSecond = new WaitForSeconds(1);
     int killCount = 0;
+
+    [SerializeField] GameObject GameOverUI;
     private void Awake()
     {
         instance = this;
@@ -32,11 +35,26 @@ public class GameManager : MonoBehaviour
                 timer[1]++;
             }
             gameUI.TimeUpdate(timer[0], timer[1]);
+            if (timer[1] == 10)
+            {
+                GameOver();
+                break;
+            }
         }
     }
     public void KillCount()
     {
         killCount++;
         gameUI.KillCounterUpdate(killCount);
+    }
+    public void GameOver()
+    {
+        GameOverUI.SetActive(true);
+        Time.timeScale = 0;
+    }
+    public void GameReStart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
     }
 }
