@@ -12,7 +12,7 @@ public class TankState : MonoBehaviour
     public float turretRange = 10f;
     public float cannonDmg;
     public float cannonCoolTime;
-    public WaitForSeconds _cannonCoolTime;
+    public WaitForSeconds _cannonCoolTime = new WaitForSeconds(5f);
     public float cannonRange = 4.5f;
     public float moveSpeed;
 

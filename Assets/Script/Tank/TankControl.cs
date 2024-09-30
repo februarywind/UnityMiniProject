@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class TankControl : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class TankControl : MonoBehaviour
     [SerializeField] Transform Cannon;
     public GameObject FirePoint;
     [SerializeField] GameObject ExplosionPoint;
+    [SerializeField] Slider Reload;
     Transform FirePoinTr;
     Rigidbody rigid;
     float YRot;
@@ -21,6 +24,10 @@ public class TankControl : MonoBehaviour
     {
         Move();
         CannonRot();
+        if (!cannonLoad)
+        {
+            Reload.value += 1 * Time.deltaTime / GameManager.instance.tankState.cannonCoolTime;
+        }
     }
     void Move()
     {
@@ -52,6 +59,7 @@ public class TankControl : MonoBehaviour
             Cannon.transform.rotation = rotateAmount;
             if (Input.GetKeyDown(KeyCode.Space) && cannonLoad)
             {
+                Reload.value = 0;
                 cannonLoad = false;
                 Instantiate(ExplosionPoint, FirePoinTr.position, Quaternion.Euler(Vector3.zero));
                 StartCoroutine(CannonCoolTime());
