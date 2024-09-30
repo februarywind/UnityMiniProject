@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class TankControl : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
     [SerializeField] float rotateSpeed;
     [SerializeField] Transform Cannon;
-    [SerializeField] GameObject FirePoint;
+    public GameObject FirePoint;
     [SerializeField] GameObject ExplosionPoint;
     Transform FirePoinTr;
     Rigidbody rigid;
     float YRot;
+    bool cannonLoad = true;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -25,7 +25,7 @@ public class TankControl : MonoBehaviour
     void Move()
     {
         float ZMove = Input.GetAxisRaw("Vertical");
-        transform.Translate(Vector3.forward * ZMove * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * ZMove * GameManager.instance.tankState.moveSpeed * Time.deltaTime);
 
         YRot += Input.GetAxisRaw("Horizontal") * rotateSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(new Vector3(0, YRot, 0));
@@ -50,10 +50,10 @@ public class TankControl : MonoBehaviour
             Quaternion rotateAmount = Quaternion.RotateTowards(Cannon.transform.rotation, targetRotation, 2 * rotateSpeed * Time.deltaTime);
 
             Cannon.transform.rotation = rotateAmount;
-            if (Input.GetKeyDown(KeyCode.Space) && !ExplosionPoint.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Space) && cannonLoad)
             {
-                ExplosionPoint.transform.position = FirePoinTr.position;
-                ExplosionPoint.SetActive(true);
+                cannonLoad = false;
+                Instantiate(ExplosionPoint, FirePoinTr.position, Quaternion.Euler(Vector3.zero));
                 StartCoroutine(CannonCoolTime());
             }
         }
@@ -66,12 +66,11 @@ public class TankControl : MonoBehaviour
             Quaternion rotateAmount = Quaternion.RotateTowards(Cannon.transform.rotation, targetRotation, 2 * rotateSpeed * Time.deltaTime);
 
             Cannon.transform.rotation = rotateAmount;
-
         }
     }
     IEnumerator CannonCoolTime()
     {
-        yield return new WaitForSeconds(GameManager.instance.tankState.CannonCoolTime);
-        ExplosionPoint.SetActive(false);
+        yield return GameManager.instance.tankState._cannonCoolTime;
+        cannonLoad = true;
     }
 }

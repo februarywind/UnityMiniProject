@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public PoolManager poolManager;
     public TankState tankState;
+    public TankControl tankControl;
     public GameUI gameUI;
     public MapRePosition mapRePosition;
 

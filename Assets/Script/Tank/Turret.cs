@@ -8,7 +8,7 @@ public class Turret : MonoBehaviour
     public GameObject particle;
     void Update()
     {
-        colliders = Physics.OverlapSphere(transform.position, GameManager.instance.tankState.TurretRange, layer);
+        colliders = Physics.OverlapSphere(transform.position, GameManager.instance.tankState.turretRange, layer);
         //Debug.Log(Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layer));
 
         if (colliders.Length > 0)

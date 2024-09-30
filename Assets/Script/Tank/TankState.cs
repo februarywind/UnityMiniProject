@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class TankState : MonoBehaviour
@@ -7,24 +8,37 @@ public class TankState : MonoBehaviour
 
     [SerializeField] float maxHp;
     [SerializeField] float hp;
-    public float TurretDmg;
-    public float TurretRange = 10f;
-    public float CannonDmg;
-    public float CannonCoolTime;
+    public float turretDmg;
+    public float turretRange = 10f;
+    public float cannonDmg;
+    public float cannonCoolTime;
+    public WaitForSeconds _cannonCoolTime;
+    public float cannonRange = 4.5f;
+    public float moveSpeed;
 
     [SerializeField] int EXP;
     [SerializeField] int levelUpEXP = 100;
+    [SerializeField] int upgradeSelectCount = 3;
     [SerializeField] GameObject buttons;
     [SerializeField] Button[] button;
-    int[] ints = { 1, 2, 3 };
     private void Awake()
     {
         hp = maxHp;
         button = buttons.GetComponentsInChildren<Button>();
     }
+    public void TankMaxHpUpdate(float value)
+    {
+        maxHp += value;
+        hp += value;
+        GameManager.instance.gameUI.HpChange(maxHp, hp);
+    }
+    public void TankSpeedUpdate(float value)
+    {
+        moveSpeed += value;
+    }
     public void TurretDmgUpdate(float value)
     {
-        TurretDmg += value;
+        turretDmg += value;
     }
     public void TurretFireSpeedUpdate(float value)
     {
@@ -36,15 +50,21 @@ public class TankState : MonoBehaviour
     }
     public void TurretRangeUpdate(float value)
     {
-        TurretRange += value;
+        turretRange += value;
     }
     public void CannonDmgUpdate(float value)
     {
-        CannonDmg += value;
+        cannonDmg += value;
     }
-    public void CannonCoolTimeUpdate()
+    public void CannonCoolTimeUpdate(float value)
     {
-
+        cannonCoolTime -= value;
+        _cannonCoolTime = new WaitForSeconds(cannonCoolTime);
+    }
+    public void CannonRangeUpdate(float value)
+    {
+        cannonRange += value;
+        GameManager.instance.tankControl.FirePoint.transform.localScale = new Vector3(cannonRange, cannonRange, cannonRange) * 2;
     }
     public void EXPUpdate(int value)
     {
@@ -59,24 +79,27 @@ public class TankState : MonoBehaviour
     }
     void LevelUp()
     {
+        if (buttons == null)
+            return;
         buttons.SetActive(true);
-        int temp = 0;
-        foreach (var item in button)
+        for (int i = 0; i < button.Length - upgradeSelectCount; i++)
         {
-            switch (ints[temp])
+            int temp = Random.Range(0, button.Length);
+            if (!button[temp].gameObject.activeSelf)
             {
-                case 1:
-                    item.onClick.AddListener(() => TurretDmgUpdate(1));
-                    break;
-                case 2:
-                    item.onClick.AddListener(() => TurretFireSpeedUpdate(1));
-                    break;
-                case 3:
-                    item.onClick.AddListener(() => TurretRangeUpdate(1));
-                    break;
+                i--;
+                continue;
             }
-            temp++;
+            button[temp].gameObject.SetActive(false);
         }
+        Time.timeScale = 0;
+    }
+    public void LevelUpEndEvent()
+    {
+        for (int i = 0; i < button.Length; i++)
+            button[i].gameObject.SetActive(true);
+        buttons.SetActive(false);
+        Time.timeScale = 1;
     }
 
     private void OnCollisionStay(Collision collision)

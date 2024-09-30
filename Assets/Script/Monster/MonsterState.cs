@@ -40,7 +40,7 @@ public class MonsterState : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        HitDmage(GameManager.instance.tankState.TurretDmg);
+        HitDmage(GameManager.instance.tankState.turretDmg);
     }
     private void OnDisable()
     {

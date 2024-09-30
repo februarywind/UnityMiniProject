@@ -8,17 +8,19 @@ public class ExplosionPoint : MonoBehaviour
     private void Awake()
     {
         sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider.radius = GameManager.instance.tankState.cannonRange;
     }
     private void OnEnable()
     {
         sphereCollider.enabled = true;
-        StartCoroutine(ColliderUnenable());
+        StartCoroutine(ColliderUnEnable());
+        Destroy(gameObject, 5);
     }
     private void OnTriggerEnter(Collider other)
     {
-        other.gameObject.GetComponent<MonsterState>().HitDmage(GameManager.instance.tankState.CannonDmg);
+        other.gameObject.GetComponent<MonsterState>().HitDmage(GameManager.instance.tankState.cannonDmg);
     }
-    IEnumerator ColliderUnenable()
+    IEnumerator ColliderUnEnable()
     {
         yield return new WaitForSeconds(0.1f);
         sphereCollider.enabled = false;
