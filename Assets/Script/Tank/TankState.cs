@@ -81,6 +81,9 @@ public class TankState : MonoBehaviour
     {
         if (buttons == null)
             return;
+        AudioManager.instance.StopAllSfx();
+        AudioManager.instance.PlaySfx(SfxAudio.LevelUp);
+        AudioManager.instance.sfxPlaying = false;
         buttons.SetActive(true);
         for (int i = 0; i < button.Length - upgradeSelectCount; i++)
         {
@@ -99,6 +102,7 @@ public class TankState : MonoBehaviour
         for (int i = 0; i < button.Length; i++)
             button[i].gameObject.SetActive(true);
         buttons.SetActive(false);
+        AudioManager.instance.sfxPlaying = true;
         Time.timeScale = 1;
     }
 

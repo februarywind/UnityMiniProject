@@ -21,13 +21,17 @@ public class Turret : MonoBehaviour
                 {
                     short_distance = short_distance2;
                     short_enemy = col;
-                    transform.LookAt(col.transform.position);
-                    particle.SetActive(true);
                 }
             }
+            transform.LookAt(short_enemy.transform.position);
+            particle.SetActive(true);
+            AudioManager.instance.PlaySfx(SfxAudio.Turret);
         }
         else
+        {
             particle.SetActive(false);
+            AudioManager.instance.StopSfx(SfxAudio.Turret);
+        }
 
     }
 

@@ -31,13 +31,19 @@ public class TankControl : MonoBehaviour
     }
     void Move()
     {
-        float ZMove = Input.GetAxisRaw("Vertical");
-        transform.Translate(Vector3.forward * ZMove * GameManager.instance.tankState.moveSpeed * Time.deltaTime);
 
         YRot += Input.GetAxisRaw("Horizontal") * rotateSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(new Vector3(0, YRot, 0));
         Camera.main.transform.position = new Vector3(transform.position.x, 25, transform.position.z - 13);
 
+        float ZMove = Input.GetAxisRaw("Vertical");
+        if (ZMove == 0)
+        {
+            AudioManager.instance.StopSfx(SfxAudio.Move);
+            return;
+        }
+        transform.Translate(Vector3.forward * ZMove * GameManager.instance.tankState.moveSpeed * Time.deltaTime);
+        AudioManager.instance.PlaySfx(SfxAudio.Move);
     }
     void CannonRot()
     {
@@ -62,6 +68,7 @@ public class TankControl : MonoBehaviour
                 Reload.value = 0;
                 cannonLoad = false;
                 Instantiate(ExplosionPoint, FirePoinTr.position, Quaternion.Euler(Vector3.zero));
+                AudioManager.instance.PlaySfx(SfxAudio.Explosion);
                 StartCoroutine(CannonCoolTime());
             }
         }
