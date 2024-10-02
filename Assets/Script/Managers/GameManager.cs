@@ -62,9 +62,12 @@ public class GameManager : MonoBehaviour
         AudioManager.instance.sfxPlaying = false;
         Time.timeScale = 0;
     }
+    public void ToTitle()
+    {
+        LoadManager.instance.ToTitleScene();
+    }
     public void GameReStart()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LoadManager.instance.ToGameScene();
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public enum SfxAudio
 {
     Turret, Move, Explosion, LevelUp, GameOver
@@ -13,7 +14,7 @@ public class AudioManager : MonoBehaviour
     [Header("BGM")]
     [SerializeField] GameObject bgmObj;
     [SerializeField] AudioClip bgmClips;
-    [SerializeField] [Range(0,1)] float bgmVolum;
+    [Range(0,1)] public float bgmVolum;
     [SerializeField] AudioSource bgmPlayer;
 
     [Header("SFX")]
@@ -25,7 +26,15 @@ public class AudioManager : MonoBehaviour
     public bool sfxPlaying = true;
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         Init();
     }
     void Init()
@@ -54,6 +63,10 @@ public class AudioManager : MonoBehaviour
         if (!sfxPlayer[(int)sfx].isPlaying) return;
         sfxPlayer[(int)sfx].Stop();
     }
+    public void StartBgm()
+    {
+        bgmPlayer.Play();
+    }
     public void StopBgm()
     {
         bgmPlayer.Stop();
@@ -63,6 +76,17 @@ public class AudioManager : MonoBehaviour
         foreach (var item in sfxPlayer)
         {
             item.Stop();
+        }
+    }
+    public void CangeBgmVolume(Slider slider)
+    {
+        bgmPlayer.volume = slider.value;
+    }
+    public void CangeSfxVolume(Slider slider)
+    {
+        for (int i = 0; i < sfxClips.Length; i++)
+        {
+            sfxPlayer[i].volume = slider.value;
         }
     }
 }
