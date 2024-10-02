@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum SfxAudio
 {
-    Turret, Move, Explosion, LevelUp
+    Turret, Move, Explosion, LevelUp, GameOver
 }
 
 public class AudioManager : MonoBehaviour
@@ -33,6 +33,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer = bgmObj.AddComponent<AudioSource>();
         bgmPlayer.volume = bgmVolum;
         bgmPlayer.clip = bgmClips;
+        bgmPlayer.loop = true;
         bgmPlayer.Play();
 
         sfxPlayer = new AudioSource[sfxClips.Length];
@@ -41,7 +42,6 @@ public class AudioManager : MonoBehaviour
             sfxPlayer[i] = sfxObj.AddComponent<AudioSource>();
             sfxPlayer[i].clip = sfxClips[i];
             sfxPlayer[i].volume = sfxVolum;
-            sfxPlayer[i].loop = false;
         }
     }
     public void PlaySfx(SfxAudio sfx)
@@ -53,6 +53,10 @@ public class AudioManager : MonoBehaviour
     {
         if (!sfxPlayer[(int)sfx].isPlaying) return;
         sfxPlayer[(int)sfx].Stop();
+    }
+    public void StopBgm()
+    {
+        bgmPlayer.Stop();
     }
     public void StopAllSfx()
     {

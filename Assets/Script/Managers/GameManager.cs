@@ -56,6 +56,10 @@ public class GameManager : MonoBehaviour
     {
         GameState = false;
         GameOverUI.SetActive(true);
+        AudioManager.instance.StopAllSfx();
+        AudioManager.instance.StopBgm();
+        AudioManager.instance.PlaySfx(SfxAudio.GameOver);
+        AudioManager.instance.sfxPlaying = false;
         Time.timeScale = 0;
     }
     public void GameReStart()
