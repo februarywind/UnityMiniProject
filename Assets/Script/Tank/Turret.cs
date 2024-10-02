@@ -11,7 +11,7 @@ public class Turret : MonoBehaviour
         colliders = Physics.OverlapSphere(transform.position, GameManager.instance.tankState.turretRange, layer);
         //Debug.Log(Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layer));
 
-        if (colliders.Length > 0)
+        if (colliders.Length > 0 && GameManager.instance.GameState)
         {
             float short_distance = 1000;
             foreach (Collider col in colliders)

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public enum SfxAudio
 {
-    Turret, Move, Explosion, LevelUp, GameOver
+    Turret, Move, Explosion, LevelUp, GameOver, GameClear
 }
 
 public class AudioManager : MonoBehaviour

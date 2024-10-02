@@ -114,7 +114,7 @@ public class TankState : MonoBehaviour
             GameManager.instance.gameUI.HpChange(maxHp, hp);
             if (hp <= 0)
             {
-                GameManager.instance.GameOver();
+                GameManager.instance.GameOver(false);
                 gameObject.GetComponent<BoxCollider>().enabled = false;
             }
         }

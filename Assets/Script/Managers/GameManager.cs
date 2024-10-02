@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public int[] timer;
     Coroutine TimerCoroutine;
     WaitForSeconds oneSecond = new WaitForSeconds(1);
-    bool GameState = true;
+    public bool GameState = true;
     int killCount = 0;
 
     [SerializeField] GameObject GameOverUI;
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
             gameUI.TimeUpdate(timer[0], timer[1]);
             if (timer[1] == 10)
             {
-                GameOver();
+                GameOver(true);
                 break;
             }
             if (timer[1] % 2 == 0)
@@ -52,13 +52,13 @@ public class GameManager : MonoBehaviour
         killCount++;
         gameUI.KillCounterUpdate(killCount);
     }
-    public void GameOver()
+    public void GameOver(bool clear)
     {
         GameState = false;
         GameOverUI.SetActive(true);
         AudioManager.instance.StopAllSfx();
         AudioManager.instance.StopBgm();
-        AudioManager.instance.PlaySfx(SfxAudio.GameOver);
+        AudioManager.instance.PlaySfx(!clear ? SfxAudio.GameOver : SfxAudio.GameClear);
         AudioManager.instance.sfxPlaying = false;
         Time.timeScale = 0;
     }
