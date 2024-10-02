@@ -24,6 +24,8 @@ public class MonsterState : MonoBehaviour
 
     [SerializeField] BoxCollider boxCollider;
 
+    Coroutine DeadCoroutine;
+
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -48,9 +50,9 @@ public class MonsterState : MonoBehaviour
     private void Update()
     {
         Move();
-        if (hp <= 0)
+        if (hp <= 0 && DeadCoroutine == null)
         {
-            StartCoroutine(Dead());
+            DeadCoroutine = StartCoroutine(Dead());
         }
     }
     void Move()
@@ -67,11 +69,6 @@ public class MonsterState : MonoBehaviour
     {
         HitDmage(GameManager.instance.tankState.turretDmg);
     }
-    private void OnDisable()
-    {
-        GameManager.instance.KillCount();
-        GameManager.instance.tankState.EXPUpdate(giveEXP);
-    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Plane")
@@ -81,9 +78,12 @@ public class MonsterState : MonoBehaviour
     }
     IEnumerator Dead()
     {
+        GameManager.instance.KillCount();
+        GameManager.instance.tankState.EXPUpdate(giveEXP);
         boxCollider.enabled = false;
         yield return new WaitForSeconds(0.5f);
         boxCollider.enabled = true;
         gameObject.SetActive(false);
+        DeadCoroutine = null;
     }
 }

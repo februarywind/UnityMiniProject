@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public int[] timer;
     Coroutine TimerCoroutine;
     WaitForSeconds oneSecond = new WaitForSeconds(1);
+    bool GameState = true;
     int killCount = 0;
 
     [SerializeField] GameObject GameOverUI;
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator Timer()
     {
-        while (true)
+        while (GameState)
         {
             yield return oneSecond;
             timer[0]++;
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
+        GameState = false;
         GameOverUI.SetActive(true);
         Time.timeScale = 0;
     }
